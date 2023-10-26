@@ -93,3 +93,15 @@ func (cs CubicSpline) Interval(x float64) int {
 	}
 	return i - 1
 }
+
+func (cs CubicSpline) GetMinX() float64 {
+	return cs.minX
+}
+
+func (cs CubicSpline) GetMaxX() float64 {
+	return cs.maxX
+}
+
+func (cs CubicSpline) GetMinMaxX() (float64, float64) {
+	return cs.minX, cs.maxX
+}
