@@ -75,7 +75,7 @@ func (cs CubicSpline) Eval(x float64) float64 {
 		return cs.y[cs.n-1]
 	}
 	i := cs.Interval(x)
-	if i >= cs.n {
+	if i >= cs.n-1 {
 		return cs.y[cs.n-1]
 	}
 	coefs := cs.c[i]
