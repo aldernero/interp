@@ -75,9 +75,14 @@ func (cs CubicSpline) Eval(x float64) float64 {
 		return cs.y[cs.n-1]
 	}
 	i := cs.Interval(x)
+	if i >= cs.n {
+		return cs.y[cs.n-1]
+	}
 	coefs := cs.c[i]
-	t := (x - cs.x[i]) / (cs.x[i+1] - cs.x[i])
-	return coefs[0] + t*(coefs[1]+t*(coefs[2]+t*coefs[3])) // Horner's method
+	dx := x - cs.x[i]
+	//t := (x - cs.x[i]) / (cs.x[i+1] - cs.x[i])
+	//return coefs[0] + t*(coefs[1]+t*(coefs[2]+t*coefs[3])) // Horner's method
+	return coefs[0] + coefs[1]*dx + coefs[2]*dx*dx + coefs[3]*dx*dx*dx
 }
 
 // interval uses a binary search to find which interval the point is in
