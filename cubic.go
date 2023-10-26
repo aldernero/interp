@@ -83,25 +83,13 @@ func (cs CubicSpline) Eval(x float64) float64 {
 	return coefs[0] + dx*(coefs[1]+dx*(coefs[2]+dx*coefs[3])) // Horner's method
 }
 
-// interval uses a binary search to find which interval the point is in
 func (cs CubicSpline) Interval(x float64) int {
-	//i := 0
-	//for i < cs.n {
-	//	if x < cs.x[i] {
-	//		break
-	//	}
-	//	i++
-	//}
-	//return i - 1
 	i := 0
-	j := len(cs.x) - 1
-	for i < j {
-		k := i + (j-i)/2
-		if x <= cs.x[k] {
-			j = k
-		} else {
-			i = k + 1
+	for i < cs.n {
+		if x < cs.x[i] {
+			break
 		}
+		i++
 	}
-	return i
+	return i - 1
 }
