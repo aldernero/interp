@@ -68,14 +68,10 @@ func NewCubicSpline(x []float64, y []float64) (CubicSpline, error) {
 
 // Eval evaluates the cubic spline at a point
 func (cs CubicSpline) Eval(x float64) float64 {
-	if x < cs.minX {
-		return cs.y[0]
-	}
-	if x >= cs.maxX {
-		return cs.y[cs.n-1]
-	}
 	i := cs.Interval(x)
-	if i >= cs.n-1 {
+	if i < 0 {
+		return cs.y[0]
+	} else if i >= cs.n-1 {
 		return cs.y[cs.n-1]
 	}
 	coefs := cs.c[i]
@@ -84,14 +80,7 @@ func (cs CubicSpline) Eval(x float64) float64 {
 }
 
 func (cs CubicSpline) Interval(x float64) int {
-	i := 0
-	for i < cs.n {
-		if x < cs.x[i] {
-			break
-		}
-		i++
-	}
-	return i - 1
+	return Bisect(cs.x, x)
 }
 
 func (cs CubicSpline) GetMinX() float64 {

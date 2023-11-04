@@ -21,3 +21,35 @@ func TDMA(a, b, c, d []float64) []float64 {
 	}
 	return x
 }
+
+func Bisect(x []float64, val float64) int {
+	n := len(x)
+	if n == 0 {
+		return 0
+	}
+	if val < x[0] {
+		return -1
+	}
+	if val > x[n-1] {
+		return n - 1
+	}
+	l := 0
+	r := n - 1
+	for l < r {
+		if val == x[l] {
+			return l
+		}
+		if val == x[r] {
+			return r
+		}
+		m := (l + r) / 2
+		if val == x[m] {
+			return m
+		} else if val < x[m] {
+			r = m
+		} else {
+			l = m + 1
+		}
+	}
+	return l - 1
+}
