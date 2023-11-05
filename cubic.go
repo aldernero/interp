@@ -69,14 +69,7 @@ func NewCubicSpline(x []float64, y []float64) (CubicSpline, error) {
 // Eval evaluates the cubic spline at a point
 func (cs CubicSpline) Eval(x float64) float64 {
 	i := cs.Interval(x)
-	if i < 0 {
-		return cs.y[0]
-	} else if i >= cs.n-1 {
-		return cs.y[cs.n-1]
-	}
-	coefs := cs.c[i]
-	dx := x - cs.x[i]
-	return coefs[0] + dx*(coefs[1]+dx*(coefs[2]+dx*coefs[3])) // Horner's method
+	return cs.EvalAtInterval(x, i)
 }
 
 // EvalAtInterval evaluates the cubic spline at a point in a given interval
