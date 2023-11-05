@@ -79,6 +79,20 @@ func (cs CubicSpline) Eval(x float64) float64 {
 	return coefs[0] + dx*(coefs[1]+dx*(coefs[2]+dx*coefs[3])) // Horner's method
 }
 
+// EvalAtInterval evaluates the cubic spline at a point in a given interval
+// Useful when it's faster to compute the interval than Bisect, for example
+// when the knots are evenly spaced
+func (cs CubicSpline) EvalAtInterval(x float64, i int) float64 {
+	if i < 0 {
+		return cs.y[0]
+	} else if i >= cs.n-1 {
+		return cs.y[cs.n-1]
+	}
+	coefs := cs.c[i]
+	dx := x - cs.x[i]
+	return coefs[0] + dx*(coefs[1]+dx*(coefs[2]+dx*coefs[3])) // Horner's method
+}
+
 func (cs CubicSpline) Interval(x float64) int {
 	return Bisect(cs.x, x)
 }
