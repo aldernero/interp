@@ -40,6 +40,7 @@ func NewCubicSpline(x []float64, y []float64) (CubicSpline, error) {
 	cs.minX = x[0]
 	cs.maxX = x[n-1]
 	cs.intervalFunc = cs.Interval
+	cs.isRegular = true
 	return cs, nil
 }
 
@@ -68,9 +69,7 @@ func NewRegularCubicSpline(x []float64, y []float64) (CubicSpline, error) {
 	cs.n = n
 	cs.minX = x[0]
 	cs.maxX = x[n-1]
-	cs.intervalFunc = func(x float64) int {
-		return int((x - cs.minX) / dx)
-	}
+	cs.intervalFunc = cs.regularIntervalFunc
 	cs.isRegular = true
 	return cs, nil
 }
@@ -140,4 +139,14 @@ func solve(x, y []float64, n int) []coefs {
 		result[i] = coefs{a, b, c, d}
 	}
 	return result
+}
+
+func (cs CubicSpline) regularIntervalFunc(x float64) int {
+	if x < cs.minX {
+		return -1
+	}
+	if x > cs.maxX {
+		return cs.n - 1
+	}
+	return int((x - cs.minX) / (cs.maxX - cs.minX) * float64(cs.n-1))
 }
