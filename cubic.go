@@ -53,13 +53,9 @@ func NewRegularCubicSpline(x []float64, y []float64) (CubicSpline, error) {
 	if n < 2 {
 		return cs, fmt.Errorf("must have at least 2 points")
 	}
-	dx := x[1] - x[0]
 	for i := 0; i < n-1; i++ {
 		if x[i] >= x[i+1] {
 			return cs, fmt.Errorf("x values must be strictly increasing")
-		}
-		if x[i+1]-x[i] != dx {
-			return cs, fmt.Errorf("x values must be evenly spaced for a regular spline")
 		}
 	}
 	cs.x = x
